@@ -8,14 +8,20 @@ import { CRYPTO_KEY_STORAGE_KEY, PASSWORDS_STORAGE_KEY } from './constants';
 import PasswordLockedContainer from './components/PasswordLockedContainer';
 import PasswordMainContainer from './components/PasswordMainContainer';
 
-function duplicateUrlsAmongPasswords(passwords: { [id: string]: Password }, url: string) {
+function duplicateUrlsAmongPasswords(passwords: { [id: string]: Password }, currentPassword: Password) {
     let duplicates: string[] = [];
     Object.keys(passwords).forEach((key) => {
-        if (passwords[key].url && passwords[key].url.includes(url)) {
-            duplicates.push(passwords[key].name);
+        if (passwords[key].url) {
+            for (let url of currentPassword.url) {
+                console.log(url);
+                if (passwords[key].url.includes(url)) {
+                    duplicates.push(passwords[key].name);
+                    break;
+                }
+            }
         }
     });
-    return duplicates.join(',');
+    return duplicates.join(', ');
 }
 
 function App() {
@@ -104,7 +110,7 @@ function App() {
             },
         };
 
-        const duplicateUrls = duplicateUrlsAmongPasswords(decryptedPasswords, password.url[0]);
+        const duplicateUrls = duplicateUrlsAmongPasswords(decryptedPasswords, password);
 
         if (duplicateUrls) {
             /*
