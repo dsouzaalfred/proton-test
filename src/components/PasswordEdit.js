@@ -68,16 +68,13 @@ function PasswordEdit({ password, onSave, onDelete, onCancel }) {
         setUrlInput('');
     }
 
-    const handleUrlDelete = useCallback(
-        (index) => () => {
-            const urls = values.url || [];
+    const handleUrlDelete = useCallback((index) => {
+        const urls = values.url || [];
 
-            urls.splice(index, 1);
+        urls.splice(index, 1);
 
-            change({ url: urls });
-        },
-        []
-    );
+        change({ url: urls });
+    });
 
     return (
         <div className={classes.container}>
