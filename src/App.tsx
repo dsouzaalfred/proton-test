@@ -8,8 +8,14 @@ import { CRYPTO_KEY_STORAGE_KEY, PASSWORDS_STORAGE_KEY } from './constants';
 import PasswordLockedContainer from './components/PasswordLockedContainer';
 import PasswordMainContainer from './components/PasswordMainContainer';
 
-function duplicateUrlsAmongPasswords(passwords: { [id: string]: Password }) {
-    return null;
+function duplicateUrlsAmongPasswords(passwords: { [id: string]: Password }, url: string) {
+    let duplicates: string[] = [];
+    Object.keys(passwords).forEach((key) => {
+        if (passwords[key].url && passwords[key].url.includes(url)) {
+            duplicates.push(passwords[key].name);
+        }
+    });
+    return duplicates.join(',');
 }
 
 function App() {
@@ -18,6 +24,12 @@ function App() {
     const [key, setKey] = useState<CryptoKey | null>(null);
 
     const [decryptedPasswords, setDecryptedPasswords] = useState<{ [id: string]: Password }>({});
+
+    const [duplicateMsg, setDuplicateMsg] = useState<string>('');
+
+    const handleUpdateDuplicateMsg = (msg: string) => {
+        setDuplicateMsg(msg);
+    };
 
     async function hydratePasswords(newKey: CryptoKey) {
         setKey(newKey);
@@ -92,13 +104,14 @@ function App() {
             },
         };
 
-        const duplicateUrls = duplicateUrlsAmongPasswords(decryptedPasswords);
+        const duplicateUrls = duplicateUrlsAmongPasswords(decryptedPasswords, password.url[0]);
 
         if (duplicateUrls) {
             /*
              * if there are duplicate urls among the passwords alert a message such as
              * 'Duplicate url "https://foobar.com" found for passwords "foo", "bar", "baz"'
              */
+            setDuplicateMsg(`Duplicate url ${password.url[0]} found for passwords ${duplicateUrls}`);
         }
 
         setDecryptedPasswords(nextPasswords);
@@ -121,13 +134,17 @@ function App() {
     }
 
     return (
-        <PasswordMainContainer
-            decryptedPasswords={decryptedPasswords}
-            onLogout={handleLogout}
-            onPasswordCreated={handlePasswordCreated}
-            onPasswordEdited={handlePasswordEdited}
-            onPasswordDeleted={handlePasswordDeleted}
-        />
+        <>
+            <PasswordMainContainer
+                decryptedPasswords={decryptedPasswords}
+                onLogout={handleLogout}
+                onPasswordCreated={handlePasswordCreated}
+                onPasswordEdited={handlePasswordEdited}
+                onPasswordDeleted={handlePasswordDeleted}
+                duplicateMsg={duplicateMsg}
+                updateDuplicateMsg={handleUpdateDuplicateMsg}
+            />
+        </>
     );
 }
 

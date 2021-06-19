@@ -9,9 +9,10 @@ import { Password } from '../models';
 interface PasswordViewProps {
     password: Password;
     onEdit: (password: Password) => void;
+    duplicateMsg: string;
 }
 
-function PasswordView({ password, onEdit }: PasswordViewProps) {
+function PasswordView({ password, onEdit, duplicateMsg }: PasswordViewProps) {
     function handleEditClick() {
         onEdit(password);
     }
@@ -25,7 +26,7 @@ function PasswordView({ password, onEdit }: PasswordViewProps) {
 
                 <Labelled label="value">{password.value || '-'}</Labelled>
 
-                <Labelled label="url">{password.url.join(', ') || '-'}</Labelled>
+                <Labelled label="url">{password.url?.join(', ') || '-'}</Labelled>
 
                 <Labelled label="created at">{new Date(password.createdAt).toTimeString() || '-'}</Labelled>
 
@@ -42,6 +43,7 @@ function PasswordView({ password, onEdit }: PasswordViewProps) {
                     icon={<Icon size="small" className="fas fa-pen" />}
                 />
             </div>
+            {duplicateMsg && <p className={classes.duplicate}>{duplicateMsg}</p>}
         </div>
     );
 }

@@ -26,6 +26,8 @@ interface Props {
     onPasswordCreated: (password: Password) => void;
     onPasswordEdited: (password: Password) => void;
     onPasswordDeleted: (id: string) => void;
+    duplicateMsg: string;
+    updateDuplicateMsg: (msg: string) => void;
 }
 
 const PasswordMain = ({
@@ -34,6 +36,8 @@ const PasswordMain = ({
     onPasswordCreated,
     onPasswordEdited,
     onPasswordDeleted,
+    duplicateMsg,
+    updateDuplicateMsg,
 }: Props) => {
     const [selectedPasswordId, setSelectedPasswordId] = useState<string | null>(null);
 
@@ -48,6 +52,7 @@ const PasswordMain = ({
 
     async function handleSelectPassword(id: string) {
         setSelectedPasswordId(id);
+        updateDuplicateMsg('');
     }
 
     function handleDelete(id: string) {
@@ -113,6 +118,7 @@ const PasswordMain = ({
                             key={selectedPasswordId}
                             password={decryptedPasswords[selectedPasswordId]}
                             onEdit={handlePasswordEditIntent}
+                            duplicateMsg={duplicateMsg}
                         />
                     )
                 ) : (
