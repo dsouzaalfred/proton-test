@@ -14,10 +14,14 @@ interface PasswordListItemProps {
 
 function PasswordListItem({ name, vulnerable, ...rest }: PasswordListItemProps) {
     return (
-        <ListItem clickable className={classes.listItem} {...rest}>
-            {name}
-            {vulnerable && <Icon size="small" className="fas fa-exclamation-triangle" />}
-        </ListItem>
+        <>
+            {name ? (
+                <ListItem clickable className={classes.listItem} {...rest}>
+                    {name}
+                    {vulnerable && <Icon size="small" className="fas fa-exclamation-triangle" />}
+                </ListItem>
+            ) : null}
+        </>
     );
 }
 

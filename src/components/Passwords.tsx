@@ -20,18 +20,14 @@ function Passwords({ editing, passwords, onSelectPassword, selectedPassword }: P
         }
 
         return (
-            <>
-                {password.name ? (
-                    <PasswordListItem
-                        key={password.id}
-                        name={password.name}
-                        disabled={editing}
-                        onClick={handleClick}
-                        vulnerable={password.value.length < 2}
-                        isSelected={selectedPassword === password.id}
-                    />
-                ) : null}
-            </>
+            <PasswordListItem
+                key={password.id}
+                name={password.name}
+                disabled={editing}
+                onClick={handleClick}
+                vulnerable={password.value.length < 2}
+                isSelected={selectedPassword === password.id}
+            />
         );
     }
 
