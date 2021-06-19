@@ -14,8 +14,8 @@ import TextArea from '../atoms/TextArea';
 const UrlList = React.memo(({ urls, onDelete }) => (
     <List className={classes.urlList}>
         {urls?.map((urlEntry, index) => (
-            <ListItem dense className={classes.urlListItem}>
-                <input autoFocus value={urlEntry} />
+            <ListItem dense className={classes.urlListItem} key={index}>
+                <input autoFocus value={urlEntry} readOnly />
                 <Icon onClick={() => onDelete(index)} size="small" className="fas fa-times" />
             </ListItem>
         ))}
@@ -83,7 +83,7 @@ function PasswordEdit({ password, onSave, onDelete, onCancel }) {
                     autoFocus
                     className={classes.titleInput}
                     name="name"
-                    value={values.name}
+                    value={values.name || ''}
                     onChange={handleChange}
                 />
             </h2>
