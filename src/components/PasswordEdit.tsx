@@ -11,6 +11,7 @@ import ListItem from '../atoms/ListItem';
 import clsx from 'clsx';
 import TextArea from '../atoms/TextArea';
 import { Password } from '../models';
+import { ContainerBlock, HeaderBlock, ContentBlock, ControlsBlock } from '../layouts/PasswordViewEditLayout';
 
 interface UrlListProps {
     urls: string[];
@@ -46,7 +47,6 @@ function PasswordEdit({ password, onSave, onDelete, onCancel }: PasswordEditProp
     const [urlInput, setUrlInput] = useState('');
 
     function change(partial: { [key: string]: string | string[] }) {
-        console.log(partial);
         setValues((values) => ({
             ...values,
             ...partial,
@@ -94,8 +94,8 @@ function PasswordEdit({ password, onSave, onDelete, onCancel }: PasswordEditProp
     );
 
     return (
-        <div className={classes.container}>
-            <h2 className={classes.title}>
+        <ContainerBlock>
+            <HeaderBlock>
                 <input
                     autoFocus
                     className={classes.titleInput}
@@ -103,8 +103,8 @@ function PasswordEdit({ password, onSave, onDelete, onCancel }: PasswordEditProp
                     value={values.name || ''}
                     onChange={handleChange}
                 />
-            </h2>
-            <div className={classes.content}>
+            </HeaderBlock>
+            <ContentBlock>
                 <Labelled label="description">
                     <TextArea name="description" value={values.description} onChange={handleChange} />
                 </Labelled>
@@ -126,8 +126,8 @@ function PasswordEdit({ password, onSave, onDelete, onCancel }: PasswordEditProp
 
                     <UrlList urls={values.url} onDelete={handleUrlDelete} />
                 </Labelled>
-            </div>
-            <div className={classes.controls}>
+            </ContentBlock>
+            <ControlsBlock>
                 <LabelledIconButton
                     label="Cancel"
                     className={classes.cancel}
@@ -147,8 +147,8 @@ function PasswordEdit({ password, onSave, onDelete, onCancel }: PasswordEditProp
                     onClick={handleDeleteClick}
                     icon={<Icon size="small" className="fas fa-trash" />}
                 />
-            </div>
-        </div>
+            </ControlsBlock>
+        </ContainerBlock>
     );
 }
 
