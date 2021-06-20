@@ -10,8 +10,14 @@ import List from '../atoms/List';
 import ListItem from '../atoms/ListItem';
 import clsx from 'clsx';
 import TextArea from '../atoms/TextArea';
+import { Password } from '../models';
 
-const UrlList = React.memo(({ urls, onDelete }) => (
+interface UrlListProps {
+    urls: string[];
+    onDelete: (idx: number) => void;
+}
+
+const UrlList = React.memo(({ urls, onDelete }: UrlListProps) => (
     <List className={classes.urlList}>
         {urls?.map((urlEntry, index) => (
             <ListItem dense className={classes.urlListItem} key={index}>
@@ -27,19 +33,27 @@ const UrlList = React.memo(({ urls, onDelete }) => (
     </List>
 ));
 
-function PasswordEdit({ password, onSave, onDelete, onCancel }) {
+interface PasswordEditProps {
+    password: Password;
+    onSave: (password: Password) => void;
+    onDelete: () => void;
+    onCancel: () => void;
+}
+
+function PasswordEdit({ password, onSave, onDelete, onCancel }: PasswordEditProps) {
     const [values, setValues] = useState(password);
 
     const [urlInput, setUrlInput] = useState('');
 
-    function change(partial) {
+    function change(partial: { [key: string]: string | string[] }) {
+        console.log(partial);
         setValues((values) => ({
             ...values,
             ...partial,
         }));
     }
 
-    function handleChange(e) {
+    function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         change({ [e.target.name]: e.target.value });
     }
 
@@ -68,13 +82,16 @@ function PasswordEdit({ password, onSave, onDelete, onCancel }) {
         setUrlInput('');
     }
 
-    const handleUrlDelete = useCallback((index) => {
-        const urls = values.url || [];
+    const handleUrlDelete = useCallback(
+        (index) => {
+            const urls = values.url || [];
 
-        urls.splice(index, 1);
+            urls.splice(index, 1);
 
-        change({ url: urls });
-    });
+            change({ url: urls });
+        },
+        [values]
+    );
 
     return (
         <div className={classes.container}>
