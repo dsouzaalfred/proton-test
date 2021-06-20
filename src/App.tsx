@@ -11,9 +11,8 @@ import PasswordMainContainer from './components/PasswordMainContainer';
 function duplicateUrlsAmongPasswords(passwords: { [id: string]: Password }, currentPassword: Password) {
     let duplicates: string[] = [];
     Object.keys(passwords).forEach((key) => {
-        if (passwords[key].url) {
+        if (passwords[key].url && passwords[key].name !== currentPassword.name) {
             for (let url of currentPassword.url) {
-                console.log(url);
                 if (passwords[key].url.includes(url)) {
                     duplicates.push(passwords[key].name);
                     break;
