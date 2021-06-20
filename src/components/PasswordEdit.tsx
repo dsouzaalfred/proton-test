@@ -121,7 +121,7 @@ function PasswordEdit({ password, onSave, onDelete, onCancel }: PasswordEditProp
                             style={{ marginRight: 4 }}
                         />
 
-                        <Button onClick={handleUrlAdd}>Add</Button>
+                        <Button onClick={handleUrlAdd}>Add URL</Button>
                     </div>
 
                     <UrlList urls={values.url} onDelete={handleUrlDelete} />

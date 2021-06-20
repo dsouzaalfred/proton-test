@@ -75,7 +75,7 @@ const PasswordMain = ({
     }
 
     const amountOfVulnerablePasswords = Object.keys(decryptedPasswords).reduce<number>(
-        (acc, key) => acc + +(decryptedPasswords[key].value.length < 3),
+        (acc, key) => acc + +(decryptedPasswords[key].value.length < 3 && decryptedPasswords[key].name),
         0
     );
 
