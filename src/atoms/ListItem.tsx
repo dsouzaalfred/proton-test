@@ -6,7 +6,7 @@ import classes from './ListItem.module.css';
 interface Props extends React.ComponentPropsWithoutRef<'li'> {
     clickable?: boolean;
     dense?: boolean;
-    isSelected: boolean;
+    isSelected?: boolean;
 }
 
 function ListItem({ className, clickable, dense, onClick, isSelected, ...rest }: Props) {

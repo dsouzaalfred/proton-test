@@ -5,6 +5,13 @@ import Icon from '../atoms/Icon';
 import Labelled from '../atoms/Labelled';
 import LabelledIconButton from './LabelledIconButton';
 import { Password } from '../models';
+import {
+    ContainerBlock,
+    HeaderBlock,
+    ContentBlock,
+    ControlsBlock,
+    WarningMessageBlock,
+} from '../layouts/PasswordViewEditLayout';
 
 interface PasswordViewProps {
     password: Password;
@@ -18,10 +25,9 @@ function PasswordView({ password, onEdit, duplicateMsg }: PasswordViewProps) {
     }
 
     return (
-        <div className={classes.container}>
-            <h2 className={classes.title}>{password.name}</h2>
-
-            <div className={classes.content}>
+        <ContainerBlock>
+            <HeaderBlock>{password.name}</HeaderBlock>
+            <ContentBlock>
                 <Labelled label="description">{password.description || '-'}</Labelled>
 
                 <Labelled label="value">{password.value || '-'}</Labelled>
@@ -33,18 +39,17 @@ function PasswordView({ password, onEdit, duplicateMsg }: PasswordViewProps) {
                 <Labelled label="last modified at">
                     {(password.lastModifiedAt && new Date(password.lastModifiedAt).toTimeString()) || '-'}
                 </Labelled>
-            </div>
-
-            <div className={classes.controls}>
+            </ContentBlock>
+            <ControlsBlock>
                 <LabelledIconButton
                     label="Edit"
                     className={classes.edit}
                     onClick={handleEditClick}
                     icon={<Icon size="small" className="fas fa-pen" />}
                 />
-            </div>
-            {duplicateMsg && <p className={classes.duplicate}>{duplicateMsg}</p>}
-        </div>
+            </ControlsBlock>
+            {duplicateMsg && <WarningMessageBlock duplicateMsg={duplicateMsg} />}
+        </ContainerBlock>
     );
 }
 

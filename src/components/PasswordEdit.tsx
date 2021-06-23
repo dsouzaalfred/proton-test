@@ -10,8 +10,15 @@ import List from '../atoms/List';
 import ListItem from '../atoms/ListItem';
 import clsx from 'clsx';
 import TextArea from '../atoms/TextArea';
+import { Password } from '../models';
+import { ContainerBlock, HeaderBlock, ContentBlock, ControlsBlock } from '../layouts/PasswordViewEditLayout';
 
-const UrlList = React.memo(({ urls, onDelete }) => (
+interface UrlListProps {
+    urls: string[];
+    onDelete: (idx: number) => void;
+}
+
+const UrlList = React.memo(({ urls, onDelete }: UrlListProps) => (
     <List className={classes.urlList}>
         {urls?.map((urlEntry, index) => (
             <ListItem dense className={classes.urlListItem} key={index}>
@@ -27,19 +34,26 @@ const UrlList = React.memo(({ urls, onDelete }) => (
     </List>
 ));
 
-function PasswordEdit({ password, onSave, onDelete, onCancel }) {
+interface PasswordEditProps {
+    password: Password;
+    onSave: (password: Password) => void;
+    onDelete: () => void;
+    onCancel: () => void;
+}
+
+function PasswordEdit({ password, onSave, onDelete, onCancel }: PasswordEditProps) {
     const [values, setValues] = useState(password);
 
     const [urlInput, setUrlInput] = useState('');
 
-    function change(partial) {
+    function change(partial: { [key: string]: string | string[] }) {
         setValues((values) => ({
             ...values,
             ...partial,
         }));
     }
 
-    function handleChange(e) {
+    function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         change({ [e.target.name]: e.target.value });
     }
 
@@ -68,17 +82,20 @@ function PasswordEdit({ password, onSave, onDelete, onCancel }) {
         setUrlInput('');
     }
 
-    const handleUrlDelete = useCallback((index) => {
-        const urls = values.url || [];
+    const handleUrlDelete = useCallback(
+        (index) => {
+            const urls = values.url || [];
 
-        urls.splice(index, 1);
+            urls.splice(index, 1);
 
-        change({ url: urls });
-    });
+            change({ url: urls });
+        },
+        [values]
+    );
 
     return (
-        <div className={classes.container}>
-            <h2 className={classes.title}>
+        <ContainerBlock>
+            <HeaderBlock>
                 <input
                     autoFocus
                     className={classes.titleInput}
@@ -86,8 +103,8 @@ function PasswordEdit({ password, onSave, onDelete, onCancel }) {
                     value={values.name || ''}
                     onChange={handleChange}
                 />
-            </h2>
-            <div className={classes.content}>
+            </HeaderBlock>
+            <ContentBlock>
                 <Labelled label="description">
                     <TextArea name="description" value={values.description} onChange={handleChange} />
                 </Labelled>
@@ -104,13 +121,13 @@ function PasswordEdit({ password, onSave, onDelete, onCancel }) {
                             style={{ marginRight: 4 }}
                         />
 
-                        <Button onClick={handleUrlAdd}>Add</Button>
+                        <Button onClick={handleUrlAdd}>Add URL</Button>
                     </div>
 
                     <UrlList urls={values.url} onDelete={handleUrlDelete} />
                 </Labelled>
-            </div>
-            <div className={classes.controls}>
+            </ContentBlock>
+            <ControlsBlock>
                 <LabelledIconButton
                     label="Cancel"
                     className={classes.cancel}
@@ -130,8 +147,8 @@ function PasswordEdit({ password, onSave, onDelete, onCancel }) {
                     onClick={handleDeleteClick}
                     icon={<Icon size="small" className="fas fa-trash" />}
                 />
-            </div>
-        </div>
+            </ControlsBlock>
+        </ContainerBlock>
     );
 }
 

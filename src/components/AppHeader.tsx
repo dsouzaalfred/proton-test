@@ -17,7 +17,7 @@ function AppHeader(props: Props) {
     return (
         <Header className={classes.header}>
             <Button disabled={editing} onClick={onNewPassword}>
-                New Password
+                Add New Password
             </Button>
 
             {amountOfVulnerablePasswords > 0 && (
